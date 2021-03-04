@@ -24,7 +24,7 @@ app.post('/azure', function (req, res) {
     const message = {
       username: "Azure Webhook",
       avatar_url: "https://azurementor.files.wordpress.com/2017/10/azure-logo.jpg",
-      content: req.body.message,
+      content: req.body.message.text,
     }
     sendToDiscord(message);
   });
