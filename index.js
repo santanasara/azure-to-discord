@@ -1,11 +1,12 @@
 require('dotenv').config();
 
 const express = require("express")
-const axios = require("axios");
 var cors = require('cors')
+const axios = require("axios");
 
 const app = express()
 const PORT = process.env.PORT || 3000;
+
 app.use(cors())
 app.use(express.json())
 
@@ -23,11 +24,10 @@ app.post('/work-item-created', function (req, res) {
     const message = {
       username: "Azure Webhook",
       avatar_url: "https://azurementor.files.wordpress.com/2017/10/azure-logo.jpg",
-      content: req.body.detailedMessage.markdown,
+      content: `${req.body.detailedMessage.markdown} \n`,
     }
     sendToDiscord(message);
   });
-
 
   
 app.listen(PORT, () => console.log(`Server on port ${PORT}`))
