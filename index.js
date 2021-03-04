@@ -1,6 +1,7 @@
+require('dotenv').config();
+
 const express = require("express")
 const axios = require("axios");
-
 var cors = require('cors')
 
 const app = express()
@@ -9,17 +10,21 @@ app.use(cors())
 app.use(express.json())
 
 
-const sendToDiscord = async () => {
-  await axios.post(process.env.DISCORD, message)
+const sendToDiscord = async (message) => {
+  try{
+    await axios.post(process.env.DISCORD, message)
+  }catch(e){
+    console.log(e)
+  }
 }
 
 
 app.post('/azure', function (req, res) {
     res.send('POST request to azure');
     const message = {
-      "username": "Webhook",
-      "avatar_url": "https://i.imgur.com/4M34hi2.png",
-      "content": "Text message. Up to 2000 characters.",
+      username: "Azure Webhook",
+      avatar_url: "https://azurementor.files.wordpress.com/2017/10/azure-logo.jpg",
+      content: req.body.message,
     }
     sendToDiscord(message);
   });
