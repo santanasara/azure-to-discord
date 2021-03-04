@@ -18,8 +18,7 @@ const sendToDiscord = async (message) => {
   }
 }
 
-
-app.post('/azure', function (req, res) {
+app.post('/work-item-created', function (req, res) {
     res.send('POST request to azure');
     const message = {
       username: "Azure Webhook",
