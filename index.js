@@ -10,24 +10,29 @@ const PORT = process.env.PORT || 3000;
 app.use(cors())
 app.use(express.json())
 
-
-const sendToDiscord = async (message) => {
+const sendToDiscord = async (message, route) => {
   try{
-    await axios.post(process.env.DISCORD, message)
+    await axios.post(route, message)
   }catch(e){
     console.log(e)
   }
 }
 
-app.post('/work-item-created', function (req, res) {
-    res.send('POST request to azure');
-    const message = {
-      username: "Azure Webhook",
-      avatar_url: "https://azurementor.files.wordpress.com/2017/10/azure-logo.jpg",
-      content: `${req.body.detailedMessage.markdown} \r\n\r\n `,
-    }
-    sendToDiscord(message);
-  });
+const processBody = (req, res, route) => {
+  res.send('POST request to azure');
+  const message = {
+    username: "Azure Webhook",
+    avatar_url: "https://azurementor.files.wordpress.com/2017/10/azure-logo.jpg",
+    content: `${req.body.detailedMessage.markdown} \r\n\r\n-`,
+  }
+  sendToDiscord(message, route);
+}
 
-  
+app.post('/work-item-created', (req, res) => processBody(req, res, process.env.AZURE_BOARD));
+app.post('/work-item-updated', (req, res) => processBody(req, res, process.env.AZURE_BOARD));
+app.post('/pull-request-created', () => processBody(req, res, process.env.AZURE_PR));
+app.post('/pull-request-updated', () => processBody(req, res, process.env.AZURE_PR));
+app.post('/code-pushed', () => processBody(req, res, process.env.AZURE_CODE));
+
+ 
 app.listen(PORT, () => console.log(`Server on port ${PORT}`))
