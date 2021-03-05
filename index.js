@@ -30,9 +30,9 @@ const processBody = (req, res, route) => {
 
 app.post('/work-item-created', (req, res) => processBody(req, res, process.env.AZURE_BOARD));
 app.post('/work-item-updated', (req, res) => processBody(req, res, process.env.AZURE_BOARD));
-app.post('/pull-request-created', () => processBody(req, res, process.env.AZURE_PR));
-app.post('/pull-request-updated', () => processBody(req, res, process.env.AZURE_PR));
-app.post('/code-pushed', () => processBody(req, res, process.env.AZURE_CODE));
+app.post('/pull-request-created', (req, res) => processBody(req, res, process.env.AZURE_PR));
+app.post('/pull-request-updated', (req, res) => processBody(req, res, process.env.AZURE_PR));
+app.post('/code-pushed', (req, res) => processBody(req, res, process.env.AZURE_CODE));
 
  
 app.listen(PORT, () => console.log(`Server on port ${PORT}`))
