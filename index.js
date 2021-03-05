@@ -25,7 +25,7 @@ const processBody = (req, res, route) => {
   switch(req.route.path){
     case '/pull-request-updated':
     case '/pull-request-created':
-      content = `[Pull request #${req.body.resource.pullRequestId}](${req.body.resource.url})\r\n\ ${req.body.detailedMessage.markdown}`;
+      content = `[Pull request #${req.body.resource.pullRequestId}](${req.body.resource.url})\r\n\ ${req.body.detailedMessage.markdown}* Area: ${req.body.resource.repository.name}`;
       break;
     default:
       content = req.body.detailedMessage.markdown;
