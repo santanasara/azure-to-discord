@@ -20,10 +20,20 @@ const sendToDiscord = async (message, route) => {
 
 const processBody = (req, res, route) => {
   res.send('POST request to azure');
+  var content = '';
+
+  switch(req.route.path){
+    case '/pull-request-updated':
+    case '/pull-request-created':
+      content = `[Pull request #${req.body.resource.pullRequestId}](${req.body.resource.url})\r\n\ ${req.body.detailedMessage.markdown}`;
+      break;
+    default:
+      content = req.body.detailedMessage.markdown;
+  }
   const message = {
     username: "Azure Webhook",
     avatar_url: "https://azurementor.files.wordpress.com/2017/10/azure-logo.jpg",
-    content: `${req.body.detailedMessage.markdown} \r\n\r\n-`,
+    content: `${content} \r\n\r\n-`,
   }
   sendToDiscord(message, route);
 }
